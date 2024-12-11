@@ -2,7 +2,7 @@
   "name": "crewai-snippets",
   "displayName": "CrewAI Snippets",
   "description": "Code snippets for CrewAI development - Easily create Agents, Tasks, and Crews",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "magno-matos",
   "engines": {
     "vscode": "^1.95.0"
