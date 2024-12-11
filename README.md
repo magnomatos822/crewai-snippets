@@ -1,15 +1,14 @@
-# crewai-snippets
-Snippets o CrewAI
+Snippets do CrewAI
 =======
 # CrewAI Snippets for VS Code
 
-This extension provides a collection of code snippets for CrewAI development in Visual Studio Code. CrewAI is a Python framework for orchestrating role-playing AI agents.
+Esta extensão fornece uma coleção de snippets de código para o desenvolvimento do CrewAI no Visual Studio Code. CrewAI é um framework Python para orquestrar agentes de IA em jogos de papéis.
 
-## Features
+## Funcionalidades
 
-This extension includes the following snippets for quick CrewAI development:
+Esta extensão inclui os seguintes snippets para desenvolvimento rápido do CrewAI:
 
-1. `crew-agent` - Create a CrewAI Agent
+1. `crew-agent` - Criar um Agente CrewAI
 ```python
 agent = Agent(
     role='role',
@@ -21,7 +20,7 @@ agent = Agent(
 )
 ```
 
-2. `crew-task` - Create a CrewAI Task
+2. `crew-task` - Criar uma Tarefa CrewAI
 ```python
 task = Task(
     description='task_description',
@@ -31,7 +30,7 @@ task = Task(
 )
 ```
 
-3. `crew-crew` - Create a CrewAI Crew
+3. `crew-crew` - Criar uma Equipe CrewAI
 ```python
 crew = Crew(
     agents=[agents],
@@ -40,68 +39,117 @@ crew = Crew(
 )
 ```
 
-4. `crew-tool` - Create a CrewAI Tool
+4. `crew-simple-tool` - Criar uma Ferramenta Simples CrewAI
 ```python
+from crewai.tools import tool
+
 @tool('tool_name')
 def function_name(parameters):
     """tool_description"""
     pass
 ```
 
-5. `crew-process` - Create a complete CrewAI process
+5. `crew-generic-process` - Criar um processo completo do CrewAI
 ```python
-from crewai import Agent, Task, Crew
+from crewai import Agent, Task, Crew, Process, TaskOutput, CrewOutput
+import os
+from crewai.tools import DirectoryReadTool, FileReadTool, SerperDevTool, WebsiteSearchTool
 
-# Create agents
-# Define your agents here
+# Configurar chaves de API
+os.environ["SERPER_API_KEY"] = "Your Key"  # serper.dev API key
+os.environ["OPENAI_API_KEY"] = "Your Key"
 
-# Create tasks
-# Define your tasks here
+# Instanciar ferramentas
+docs_tool = DirectoryReadTool(directory='./blog-posts')
+file_tool = FileReadTool()
+search_tool = SerperDevTool()
+web_rag_tool = WebsiteSearchTool()
 
-# Create crew
-crew = Crew(
-    agents=[agents],
-    tasks=[tasks],
-    verbose=2
+# Definir seus agentes
+agent1 = Agent(
+    role='role1',
+    goal='goal1',
+    backstory='backstory1',
+    cache=True,
+    verbose=False,
+    use_system_prompt=True,
+    max_rpm=30,
+    max_iter=5
+)
+agent2 = Agent(
+    role='role2',
+    goal='goal2',
+    backstory='backstory2',
+    cache=True,
+    verbose=False,
+    use_system_prompt=True,
+    max_rpm=30,
+    max_iter=5
 )
 
-# Start the process
-result = crew.kickoff()
+# Definir suas tarefas
+task1 = Task(
+    description='description1',
+    agent=agent1,
+    expected_output='expected_output1'
+)
+task2 = Task(
+    description='description2',
+    agent=agent2,
+    expected_output='expected_output2'
+)
+
+# Formar a equipe com um processo genérico
+generic_crew = Crew(
+    agents=[agent1, agent2],
+    tasks=[task1, task2],
+    process=Process.process_type,
+    respect_context_window=True,
+    memory=True,
+    manager_agent=None,
+    planning=True
+)
+
+# Executar a equipe
+result = generic_crew.kickoff()
+
+# Acessar a saída com tipagem segura
+task_output: TaskOutput = result.tasks[0].output
+crew_output: CrewOutput = result.output
 ```
 
-## Requirements
+## Requisitos
 
-- Visual Studio Code 1.95.0 or higher
-- Python extension for VS Code
-- CrewAI library installed (`pip install crewai`)
+- Visual Studio Code 1.95.0 ou superior
+- Extensão Python para VS Code
+- Biblioteca CrewAI instalada (`pip install crewai`)
 
-## Installation
+## Instalação
 
-1. Open VS Code
-2. Go to Extensions (Ctrl+Shift+X)
-3. Search for "CrewAI Snippets"
-4. Click Install
+1. Abra o VS Code
+2. Vá para Extensões (Ctrl+Shift+X)
+3. Pesquise por "CrewAI Snippets"
+4. Clique em Instalar
 
-## Usage
+## Uso
 
-1. Open a Python file
-2. Type one of the snippet prefixes (e.g., `crew-agent`)
-3. Press Tab or Enter to insert the snippet
-4. Use Tab to navigate through the placeholders and fill in your values
+1. Abra um arquivo Python
+2. Digite um dos prefixos de snippet (por exemplo, `crew-agent`)
+3. Pressione Tab ou Enter para inserir o snippet
+4. Use Tab para navegar pelos placeholders e preencha seus valores
 
-## License
+## Licença
 
-This extension is licensed under the MIT License.
+Esta extensão está licenciada sob a Licença MIT.
 
-## Contributing
+## Contribuição
 
-Feel free to contribute to this extension on [GitHub](https://github.com/yourusername/crewai-snippets).
+Sinta-se à vontade para contribuir com esta extensão no [GitHub](https://github.com/yourusername/crewai-snippets).
 
-## Release Notes
+## Notas de Lançamento
 
 ### 0.0.1
 
-Initial release of CrewAI Snippets:
-- Added basic snippets for Agents, Tasks, Crews, and Tools
-- Added complete process template
-
+Lançamento inicial dos Snippets CrewAI:
+- Adicionados snippets básicos para Agentes, Tarefas, Equipes e Ferramentas
+- Adicionado template de processo completo
