@@ -1,0 +1,72 @@
+{
+  "CrewAI Agent": {
+    "prefix": "crew-agent",
+    "body": [
+      "agent = Agent(",
+      "    role='${1:role}',",
+      "    goal='${2:goal}',",
+      "    backstory='${3:agent_backstory}',",
+      "    tools=[${4:tools}],",
+      "    verbose=True,",
+      "    allow_delegation=False",
+      ")"
+    ],
+    "description": "Create a CrewAI Agent"
+  },
+  "CrewAI Task": {
+    "prefix": "crew-task",
+    "body": [
+      "task = Task(",
+      "    description='${1:task_description}',",
+      "    agent=agent,",
+      "    expected_output='${2:expected_output}',",
+      "    context='${3:additional_context}'",
+      ")"
+    ],
+    "description": "Create a CrewAI Task"
+  },
+  "CrewAI Crew": {
+    "prefix": "crew-crew",
+    "body": [
+      "crew = Crew(",
+      "    agents=[${1:agents}],",
+      "    tasks=[${2:tasks}],",
+      "    verbose=2",
+      ")"
+    ],
+    "description": "Create a CrewAI Crew"
+  },
+  "CrewAI Tool": {
+    "prefix": "crew-tool",
+    "body": [
+      "@tool('${1:tool_name}')",
+      "def ${2:function_name}(${3:parameters}):",
+      "    \"\"\"${4:tool_description}\"\"\"",
+      "    ${5:pass}"
+    ],
+    "description": "Create a CrewAI Tool"
+  },
+  "CrewAI Process": {
+    "prefix": "crew-process",
+    "body": [
+      "from crewai import Agent, Task, Crew",
+      "",
+      "# Create agents",
+      "${1:# Define your agents here}",
+      "",
+      "# Create tasks",
+      "${2:# Define your tasks here}",
+      "",
+      "# Create crew",
+      "crew = Crew(",
+      "    agents=[${3:agents}],",
+      "    tasks=[${4:tasks}],",
+      "    verbose=2",
+      ")",
+      "",
+      "# Start the process",
+      "result = crew.kickoff()"
+    ],
+    "description": "Create a complete CrewAI process"
+  }
+}
