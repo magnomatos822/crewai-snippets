@@ -1,0 +1,109 @@
+{
+    "CrewAI Agent": {
+        "prefix": "crewai_agent",
+        "body": [
+            "from crewai import Agent",
+            "",
+            "${1:agent_name} = Agent(",
+            "\trole='${2:Your Agent Role}',",
+            "\tgoal='${3:Your Agent Goal}',",
+            "\tbackstory=\"\"\"${4:A detailed backstory for your agent.}\"\"\",",
+            "\ttools=[",
+            "\t\t# Add your tools here, e.g., search_tool",
+            "\t\t# ${5:tool_instance}",
+            "\t],",
+            "\tallow_delegation=${6:False},",
+            "\tverbose=True,",
+            "\t# llm=${7:your_llm_instance} # Optional: Configure a specific LLM for this agent",
+            ")"
+        ],
+        "description": "Creates a new CrewAI Agent definition."
+    },
+    "CrewAI Task": {
+        "prefix": "crewai_task",
+        "body": [
+            "from crewai import Task",
+            "",
+            "${1:task_name} = Task(",
+            "\tdescription=\"\"\"${2:Detailed description of the task, including any specific instructions or context.}\"\"\",",
+            "\texpected_output=\"\"\"${3:A clear and concise description of the expected output from this task.}\"\"\",",
+            "\tagent=${4:agent_instance},",
+            "\t# tools=[${5:optional_tool_instance}], # Optional: Specify tools if different from agent's default tools",
+            "\t# async_execution=${6:False}, # Optional: Set to True for asynchronous execution",
+            "\t# context=[${7:optional_task_instance}], # Optional: List of tasks whose output will be available to this task",
+            "\t# output_file='${8:path/to/output_file.md}' # Optional: File to save the task's output",
+            ")"
+        ],
+        "description": "Creates a new CrewAI Task definition."
+    },
+    "CrewAI Crew": {
+        "prefix": "crewai_crew",
+        "body": [
+            "from crewai import Crew, Process",
+            "",
+            "${1:crew_name} = Crew(",
+            "\tagents=[",
+            "\t\t# List of agent instances involved in this crew",
+            "\t\t${2:agent_instance_1},",
+            "\t\t${3:agent_instance_2}",
+            "\t],",
+            "\ttasks=[",
+            "\t\t# List of task instances to be executed by the crew",
+            "\t\t${4:task_instance_1},",
+            "\t\t${5:task_instance_2}",
+            "\t],",
+            "\tprocess=Process.${6:sequential},  # Options: sequential, hierarchical",
+            "\tverbose=True,",
+            "\t# memory=True, # Optional: Enables memory for the crew (short-term and long-term)",
+            "\t# cache=True, # Optional: Enables caching for task executions",
+            "\t# manager_llm=${7:your_llm_instance}, # Optional: LLM for the hierarchical manager agent",
+            "\t# output_log_file='${8:path/to/crew_log.txt}' # Optional: File to save detailed execution logs",
+            ")"
+        ],
+        "description": "Creates a new CrewAI Crew definition."
+    },
+    "CrewAI Tool": {
+        "prefix": "crewai_tool",
+        "body": [
+            "from crewai_tools import BaseTool",
+            "",
+            "class ${1:MyCustomTool}(BaseTool):",
+            "\tname: str = \"${2:Name of your custom tool}\"",
+            "\tdescription: str = \"${3:Brief description of what your tool does and its arguments}\"",
+            "",
+            "\tdef _run(self, ${4:argument_name}: str) -> str:",
+            "\t\t# Your tool's logic here",
+            "\t\t# Example: return f\"Processed {argument_name}\"",
+            "\t\t${5:pass}",
+            "",
+            "# To use this tool:",
+            "# ${6:tool_instance} = ${1:MyCustomTool}()"
+        ],
+        "description": "Creates a new custom CrewAI Tool using BaseTool."
+    },
+    "CrewAI Flow (Basic)": {
+        "prefix": "crewai_flow",
+        "body": [
+            "from crewai import Flow # Assuming this is the correct import for Flow",
+            "",
+            "# Define your agents and tasks here (or import them)",
+            "# agent_1 = ...",
+            "# task_1 = ...",
+            "",
+            "# Basic flow structure (adapt based on actual CrewAI Flow API)",
+            "# This is a conceptual snippet and might need adjustment once Flow API is stable/documented for code.",
+            "my_flow = Flow(",
+            "\tname='${1:MyAwesomeFlow}',",
+            "\tdescription='${2:Description of what this flow orchestrates.}',",
+            "\tsteps=[",
+            "\t\t# Define steps, which could be tasks or other flows",
+            "\t\t# { 'task': task_1, 'context': {} },",
+            "\t\t# { 'crew': some_crew_instance, 'inputs': {} }",
+            "\t\t${3:step_1_definition}",
+            "\t],",
+            "\t# llm=${4:your_llm_instance} # Optional: LLM for the flow orchestration if needed",
+            ")"
+        ],
+        "description": "Creates a basic structure for a CrewAI Flow (conceptual)."
+    }
+}

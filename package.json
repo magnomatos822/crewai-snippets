@@ -1,34 +1,75 @@
 {
-  "name": "crewai-snippets",
-  "displayName": "CrewAI Snippets",
-  "description": "Code snippets for CrewAI development - Easily create Agents, Tasks, and Crews",
-  "version": "0.0.3",
-  "publisher": "magno-matos",
-  "engines": {
-    "vscode": "^1.95.0"
-  },
-  "categories": [
-    "Snippets"
-  ],
-  "keywords": [
-    "crewai",
-    "ai",
-    "agents",
-    "automation",
-    "python"
-  ],
-  "icon": "images/icon.png",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yourusername/crewai-snippets"
-  },
-  "contributes": {
-    "snippets": [
-      {
-        "language": "python",
-        "path": "./snippets/snippets.code-snippets"
-      }
-    ]
-  },
-  "license": "MIT"
+    "name": "crewai-vscode-extension",
+    "displayName": "CrewAI VSCode Extension",
+    "description": "VSCode extension to help develop, debug and manage CrewAI projects.",
+    "version": "0.0.1",
+    "publisher": "YourPublisherName", 
+    "engines": {
+        "vscode": "^1.80.0" 
+    },
+    "categories": [
+        "Linters",
+        "Snippets",
+        "Programming Languages",
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:crewai-vscode-extension.helloWorld",
+        "onCommand:crewai.newCrewProject",
+        "onCommand:crewai.newFlowProject",
+        "onCommand:crewai.runCrewOrFlow",
+        "onCommand:crewai.startChatSession",
+        "onCommand:crewai.viewTaskOutputs"
+    ],
+    "main": "./out/extension.js", 
+    "contributes": {
+        "commands": [
+            {
+                "command": "crewai-vscode-extension.helloWorld",
+                "title": "CrewAI: Hello World"
+            },
+            {
+                "command": "crewai.newCrewProject",
+                "title": "CrewAI: New Crew Project"
+            },
+            {
+                "command": "crewai.newFlowProject",
+                "title": "CrewAI: New Flow Project"
+            },
+            {
+                "command": "crewai.runCrewOrFlow",
+                "title": "CrewAI: Run Crew/Flow"
+            },
+            {
+                "command": "crewai.startChatSession",
+                "title": "CrewAI: Start Chat Session"
+            },
+            {
+                "command": "crewai.viewTaskOutputs",
+                "title": "CrewAI: View Task Outputs"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "python",
+                "path": "./snippets/crewai.code-snippets"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "lint": "eslint src --ext ts"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.80.0",
+        "@types/node": "18.x", 
+        "eslint": "^8.0.0", 
+        "@typescript-eslint/parser": "^5.0.0", 
+        "@typescript-eslint/eslint-plugin": "^5.0.0", 
+        "typescript": "^5.0.0" 
+    },
+    "dependencies": {
+    }
 }
