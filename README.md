@@ -1,155 +1,86 @@
-Snippets do CrewAI
-=======
-# CrewAI Snippets for VS Code
+# CrewAI VSCode Extension
 
-Esta extensão fornece uma coleção de snippets de código para o desenvolvimento do CrewAI no Visual Studio Code. CrewAI é um framework Python para orquestrar agentes de IA em jogos de papéis.
+**Desenvolva, depure e gerencie seus projetos CrewAI com facilidade diretamente no VSCode!**
 
-## Funcionalidades
+Esta extensão visa simplificar o fluxo de trabalho de desenvolvimento para o [CrewAI](https://www.crewai.com/), um poderoso framework Python para orquestrar agentes de IA colaborativos. Com esta ferramenta, você pode criar novos projetos, gerar componentes essenciais com snippets de código, executar e testar suas crews, interagir com elas via chat e visualizar logs, tudo dentro do seu editor favorito.
 
-Esta extensão inclui os seguintes snippets para desenvolvimento rápido do CrewAI:
+## Funcionalidades Implementadas
 
-1. `crew-agent` - Criar um Agente CrewAI
-```python
-agent = Agent(
-    role='role',
-    goal='goal',
-    backstory='agent_backstory',
-    tools=[tools],
-    verbose=True,
-    allow_delegation=False
-)
-```
+A extensão "CrewAI VSCode Extension" oferece os seguintes recursos:
 
-2. `crew-task` - Criar uma Tarefa CrewAI
-```python
-task = Task(
-    description='task_description',
-    agent=agent,
-    expected_output='expected_output',
-    context='additional_context'
-)
-```
-
-3. `crew-crew` - Criar uma Equipe CrewAI
-```python
-crew = Crew(
-    agents=[agents],
-    tasks=[tasks],
-    verbose=2
-)
-```
-
-4. `crew-simple-tool` - Criar uma Ferramenta Simples CrewAI
-```python
-from crewai.tools import tool
-
-@tool('tool_name')
-def function_name(parameters):
-    """tool_description"""
-    pass
-```
-
-5. `crew-generic-process` - Criar um processo completo do CrewAI
-```python
-from crewai import Agent, Task, Crew, Process, TaskOutput, CrewOutput
-import os
-from crewai.tools import DirectoryReadTool, FileReadTool, SerperDevTool, WebsiteSearchTool
-
-# Configurar chaves de API
-os.environ["SERPER_API_KEY"] = "Your Key"  # serper.dev API key
-os.environ["OPENAI_API_KEY"] = "Your Key"
-
-# Instanciar ferramentas
-docs_tool = DirectoryReadTool(directory='./blog-posts')
-file_tool = FileReadTool()
-search_tool = SerperDevTool()
-web_rag_tool = WebsiteSearchTool()
-
-# Definir seus agentes
-agent1 = Agent(
-    role='role1',
-    goal='goal1',
-    backstory='backstory1',
-    cache=True,
-    verbose=False,
-    use_system_prompt=True,
-    max_rpm=30,
-    max_iter=5
-)
-agent2 = Agent(
-    role='role2',
-    goal='goal2',
-    backstory='backstory2',
-    cache=True,
-    verbose=False,
-    use_system_prompt=True,
-    max_rpm=30,
-    max_iter=5
-)
-
-# Definir suas tarefas
-task1 = Task(
-    description='description1',
-    agent=agent1,
-    expected_output='expected_output1'
-)
-task2 = Task(
-    description='description2',
-    agent=agent2,
-    expected_output='expected_output2'
-)
-
-# Formar a equipe com um processo genérico
-generic_crew = Crew(
-    agents=[agent1, agent2],
-    tasks=[task1, task2],
-    process=Process.process_type,
-    respect_context_window=True,
-    memory=True,
-    manager_agent=None,
-    planning=True
-)
-
-# Executar a equipe
-result = generic_crew.kickoff()
-
-# Acessar a saída com tipagem segura
-task_output: TaskOutput = result.tasks[0].output
-crew_output: CrewOutput = result.output
-```
+*   **Criação de Projetos CrewAI:**
+    *   **Novo Projeto de Crew:** Crie rapidamente a estrutura base para um novo projeto de Crew usando o comando `crewai create crew <nome_do_projeto>`.
+    *   **Novo Projeto de Flow:** Crie a estrutura base para um novo projeto de Flow usando o comando `crewai create flow <nome_do_projeto>`.
+*   **Snippets de Código Inteligentes:**
+    *   Gere rapidamente código boilerplate para:
+        *   `Agent` (prefixo: `crewai_agent`)
+        *   `Task` (prefixo: `crewai_task`)
+        *   `Crew` (prefixo: `crewai_crew`)
+        *   `Tool` (customizado, prefixo: `crewai_tool`)
+        *   `Flow` (estrutura básica, prefixo: `crewai_flow`)
+*   **Execução de Crews e Flows:**
+    *   Execute seu projeto CrewAI (crew ou flow) diretamente do VSCode usando o comando `crewai run` no diretório do projeto.
+*   **Chat Interativo com Crews:**
+    *   Inicie uma sessão de chat interativo com sua crew (`crewai chat`) para fornecer inputs e interagir em tempo real.
+*   **Visualização de Logs de Tarefas:**
+    *   Acesse os logs das últimas saídas de tarefas da sua crew (`crewai log-tasks-outputs`) para depuração e análise.
+*   **Execução de Testes:**
+    *   Execute os testes configurados para sua crew (`crewai test`) para garantir a qualidade e o comportamento esperado.
 
 ## Requisitos
 
-- Visual Studio Code 1.95.0 ou superior
-- Extensão Python para VS Code
-- Biblioteca CrewAI instalada (`pip install crewai`)
+1.  **Visual Studio Code:** Versão 1.80.0 ou superior.
+2.  **CrewAI CLI:** O [CrewAI CLI](https://docs.crewai.com/concepts/cli/) deve estar instalado e configurado corretamente no PATH do seu sistema. Você pode instalar o CrewAI (que inclui a CLI) com:
+    ```bash
+    pip install crewai crewai-tools
+    ```
+3.  **Python:** Uma instalação funcional do Python (geralmente a mesma usada pelo seu projeto CrewAI).
+4.  **Ambiente Virtual (Recomendado):** É altamente recomendável usar um ambiente virtual Python para seus projetos CrewAI para gerenciar dependências.
 
-## Instalação
+## Como Usar
 
-1. Abra o VS Code
-2. Vá para Extensões (Ctrl+Shift+X)
-3. Pesquise por "CrewAI Snippets"
-4. Clique em Instalar
+Todos os comandos podem ser acessados através da Paleta de Comandos do VSCode (`Ctrl+Shift+P` ou `Cmd+Shift+P` em macOS).
 
-## Uso
+1.  **`CrewAI: New Crew Project`**
+    *   Abra a Paleta de Comandos.
+    *   Digite e selecione `CrewAI: New Crew Project`.
+    *   Insira o nome desejado para o seu projeto de crew quando solicitado.
+    *   Um novo terminal será aberto e o comando `crewai create crew <nome_inserido>` será executado.
+2.  **`CrewAI: New Flow Project`**
+    *   Abra a Paleta de Comandos.
+    *   Digite e selecione `CrewAI: New Flow Project`.
+    *   Insira o nome desejado para o seu projeto de flow quando solicitado.
+    *   Um novo terminal será aberto e o comando `crewai create flow <nome_inserido>` será executado.
+3.  **Snippets de Código (Ex: `crewai_agent`)**
+    *   Abra um arquivo Python (`.py`).
+    *   Comece a digitar um dos prefixos de snippet (ex: `crewai_agent`, `crewai_task`).
+    *   Selecione o snippet desejado na lista de sugestões e pressione `Enter` ou `Tab`.
+    *   Use `Tab` para navegar pelos placeholders e preencher os valores.
+4.  **`CrewAI: Run Crew/Flow`**
+    *   Abra o arquivo Python principal do seu projeto CrewAI no editor.
+    *   Abra a Paleta de Comandos.
+    *   Digite e selecione `CrewAI: Run Crew/Flow`.
+    *   Um novo terminal será aberto no diretório do seu arquivo, e o comando `crewai run` será executado.
+5.  **`CrewAI: Start Chat Session`**
+    *   Abra o arquivo Python principal do seu projeto CrewAI no editor.
+    *   Abra a Paleta de Comandos.
+    *   Digite e selecione `CrewAI: Start Chat Session`.
+    *   Um novo terminal será aberto no diretório do seu arquivo, e o comando `crewai chat` será executado.
+6.  **`CrewAI: View Task Outputs`**
+    *   Abra o arquivo Python principal do seu projeto CrewAI no editor.
+    *   Abra a Paleta de Comandos.
+    *   Digite e selecione `CrewAI: View Task Outputs`.
+    *   Um novo terminal será aberto no diretório do seu arquivo, e o comando `crewai log-tasks-outputs` será executado.
+7.  **`CrewAI: Run Tests`**
+    *   Abra um arquivo Python do seu projeto CrewAI ou tenha a pasta do projeto aberta no workspace.
+    *   Abra a Paleta de Comandos.
+    *   Digite e selecione `CrewAI: Run Tests`.
+    *   Um novo terminal será aberto (no diretório do arquivo ativo ou na raiz do workspace), e o comando `crewai test` será executado.
 
-1. Abra um arquivo Python
-2. Digite um dos prefixos de snippet (por exemplo, `crew-agent`)
-3. Pressione Tab ou Enter para inserir o snippet
-4. Use Tab para navegar pelos placeholders e preencha seus valores
+## Contribuições
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests no repositório do projeto. (Link para o repositório a ser adicionado aqui quando disponível)
 
 ## Licença
 
-Esta extensão está licenciada sob a Licença MIT.
-
-## Contribuição
-
-Sinta-se à vontade para contribuir com esta extensão no [GitHub](https://github.com/yourusername/crewai-snippets).
-
-## Notas de Lançamento
-
-### 0.0.1
-
-Lançamento inicial dos Snippets CrewAI:
-- Adicionados snippets básicos para Agentes, Tarefas, Equipes e Ferramentas
-- Adicionado template de processo completo
+Esta extensão é distribuída sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.

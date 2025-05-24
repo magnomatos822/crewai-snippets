@@ -1,4 +1,32 @@
+# Common VS Code extension development ignores
 .vscode/**
 .vscode-test/**
+node_modules/
+out/test/** # Exclude compiled test files if they are not part of the runtime
+src/**      # Exclude source TypeScript files
+tsconfig.json
+*.log
+*.vsix
+.gitattributes
 .gitignore
+.DS_Store
+# Potentially add other files like webpack configs if used, etc.
+# Keep the vsc-extension-quickstart.md if it's not meant to be packaged,
+# or remove it from here if it's a useful doc for users.
+# For now, I'll keep it excluded as per the original file.
 vsc-extension-quickstart.md
+images/ # If images are only for the README and not icons used by the extension itself in UI
+# If the icon in package.json is from images/, then this line should be removed or refined.
+# The current package.json from previous steps does not specify an icon.
+# The one I read in step 1 of this subtask did: "icon": "images/icon.png".
+# If an icon is used from the images/ folder and referenced in package.json,
+# that specific icon file should NOT be ignored, or the images/ line should be removed.
+# For now, assuming no icon is directly used by the extension UI from this folder.
+
+# Exclude markdown files not intended for packaging, like contribution guides or detailed dev docs
+# README.md and LICENSE are typically included.
+CHANGELOG.md # Often included, but can be excluded if preferred.
+# vscode_extension_features.md # This was a planning document.
+# Let's explicitly exclude the planning document.
+vscode_extension_features.md
+```

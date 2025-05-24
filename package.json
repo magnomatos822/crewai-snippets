@@ -2,16 +2,24 @@
     "name": "crewai-vscode-extension",
     "displayName": "CrewAI VSCode Extension",
     "description": "VSCode extension to help develop, debug and manage CrewAI projects.",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "publisher": "YourPublisherName", 
     "engines": {
         "vscode": "^1.80.0" 
     },
     "categories": [
-        "Linters",
-        "Snippets",
         "Programming Languages",
+        "Snippets",
+        "Linters",
         "Other"
+    ],
+    "keywords": [
+        "crewai",
+        "ai",
+        "agents",
+        "python",
+        "automation",
+        "multi-agent"
     ],
     "activationEvents": [
         "onCommand:crewai-vscode-extension.helloWorld",
@@ -19,7 +27,8 @@
         "onCommand:crewai.newFlowProject",
         "onCommand:crewai.runCrewOrFlow",
         "onCommand:crewai.startChatSession",
-        "onCommand:crewai.viewTaskOutputs"
+        "onCommand:crewai.viewTaskOutputs",
+        "onCommand:crewai.runTests"
     ],
     "main": "./out/extension.js", 
     "contributes": {
@@ -47,6 +56,10 @@
             {
                 "command": "crewai.viewTaskOutputs",
                 "title": "CrewAI: View Task Outputs"
+            },
+            {
+                "command": "crewai.runTests",
+                "title": "CrewAI: Run Tests"
             }
         ],
         "snippets": [

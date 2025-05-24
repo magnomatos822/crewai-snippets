@@ -144,6 +144,37 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage(`Attempting to fetch CrewAI task outputs in: ${projectDir}. Check the terminal.`);
     });
     context.subscriptions.push(viewTaskOutputsCommand);
+
+    let runTestsCommand = vscode.commands.registerCommand('crewai.runTests', async () => {
+        let projectDir: string | undefined = undefined;
+
+        const editor = vscode.window.activeTextEditor;
+        if (editor && editor.document.languageId === 'python') {
+            const filePath = editor.document.uri.fsPath;
+            // A more robust way to get the directory:
+            // import * as path from 'path';
+            // projectDir = path.dirname(filePath);
+            projectDir = vscode.Uri.file(filePath.substring(0, filePath.lastIndexOf('/'))).fsPath;
+        } else if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+            projectDir = vscode.workspace.workspaceFolders[0].uri.fsPath;
+            vscode.window.showInformationMessage(`No active Python file. Using workspace root for tests: ${projectDir}`);
+        }
+
+        if (!projectDir) {
+            vscode.window.showErrorMessage("Could not determine project directory. Please open a Python file or a workspace.");
+            return;
+        }
+
+        const terminal = vscode.window.createTerminal({
+            name: "CrewAI Tests",
+            cwd: projectDir
+        });
+
+        terminal.sendText("crewai test");
+        terminal.show();
+        vscode.window.showInformationMessage(`Attempting to run CrewAI tests in: ${projectDir}. Check the terminal.`);
+    });
+    context.subscriptions.push(runTestsCommand);
 }
 
 // This method is called when your extension is deactivated
