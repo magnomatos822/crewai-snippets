@@ -1,9 +1,9 @@
 {
   "name": "crewai-snippets",
   "displayName": "CrewAI Snippets",
-  "description": "Code snippets for CrewAI development - Easily create Agents, Tasks, and Crews",
-  "version": "0.0.3",
-  "publisher": "magno-matos",
+  "description": "Comprehensive code snippets for CrewAI development - Create Agents, Tasks, Crews, Tools, Pipelines, and more",
+  "version": "1.2.0",
+  "publisher": "MagnoNMatos",
   "engines": {
     "vscode": "^1.95.0"
   },
@@ -15,7 +15,11 @@
     "ai",
     "agents",
     "automation",
-    "python"
+    "python",
+    "llm",
+    "tools",
+    "pipeline",
+    "flow"
   ],
   "icon": "images/icon.png",
   "repository": {
@@ -27,6 +31,12 @@
       {
         "language": "python",
         "path": "./snippets/snippets.code-snippets"
+      }
+    ],
+    "commands": [
+      {
+        "command": "crewai.createProject",
+        "title": "Create CrewAI Project Structure"
       }
     ]
   },

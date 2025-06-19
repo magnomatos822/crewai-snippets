@@ -1,155 +1,281 @@
-Snippets do CrewAI
-=======
 # CrewAI Snippets for VS Code
 
-Esta extensão fornece uma coleção de snippets de código para o desenvolvimento do CrewAI no Visual Studio Code. CrewAI é um framework Python para orquestrar agentes de IA em jogos de papéis.
+Esta extensão fornece uma coleção abrangente de snippets de código para o desenvolvimento com CrewAI no Visual Studio Code. CrewAI é um framework Python para orquestrar agentes de IA que trabalham em equipe para resolver tarefas complexas.
 
-## Funcionalidades
+## 🚀 Funcionalidades
 
-Esta extensão inclui os seguintes snippets para desenvolvimento rápido do CrewAI:
+Esta extensão inclui snippets para todas as principais funcionalidades do CrewAI:
 
-1. `crew-agent` - Criar um Agente CrewAI
+### 📋 Componentes Básicos
+
+#### 1. `crew-agent` - Criar um Agente CrewAI Completo
+
 ```python
+from crewai import Agent
+
 agent = Agent(
     role='role',
     goal='goal',
     backstory='agent_backstory',
     tools=[tools],
+    llm=llm,
     verbose=True,
-    allow_delegation=False
+    allow_delegation=False,
+    max_iter=5,
+    max_rpm=10,
+    memory=True,
+    system_template="",
+    prompt_template="",
+    response_template=""
 )
 ```
 
-2. `crew-task` - Criar uma Tarefa CrewAI
+#### 2. `crew-task` - Criar uma Tarefa CrewAI Completa
+
 ```python
+from crewai import Task
+
 task = Task(
     description='task_description',
     agent=agent,
     expected_output='expected_output',
-    context='additional_context'
+    tools=[tools],
+    async_execution=False,
+    context=[previous_tasks],
+    output_json=None,
+    output_pydantic=None,
+    output_file='',
+    callback=None
 )
 ```
 
-3. `crew-crew` - Criar uma Equipe CrewAI
+#### 3. `crew-crew` - Criar uma Equipe CrewAI Avançada
+
 ```python
+from crewai import Crew, Process
+
 crew = Crew(
     agents=[agents],
     tasks=[tasks],
-    verbose=2
+    process=Process.sequential,
+    verbose=2,
+    memory=True,
+    cache=True,
+    max_rpm=10,
+    share_crew=False,
+    output_log_file='crew_log.txt',
+    manager_llm=None,
+    function_calling_llm=None,
+    config=None,
+    id='crew_id'
 )
 ```
 
-4. `crew-simple-tool` - Criar uma Ferramenta Simples CrewAI
+### 🛠️ Ferramentas
+
+#### 4. `crew-simple-tool` - Criar uma Ferramenta Simples
+
 ```python
 from crewai.tools import tool
 
-@tool('tool_name')
-def function_name(parameters):
-    """tool_description"""
-    pass
+@tool("Tool Name")
+def my_simple_tool(question: str) -> str:
+    """Tool description for clarity."""
+    # Tool logic here
+    return "Tool output"
 ```
 
-5. `crew-generic-process` - Criar um processo completo do CrewAI
+#### 5. `crew-custom-tool` - Criar uma Ferramenta Personalizada com Schema
+
 ```python
-from crewai import Agent, Task, Crew, Process, TaskOutput, CrewOutput
-import os
-from crewai.tools import DirectoryReadTool, FileReadTool, SerperDevTool, WebsiteSearchTool
+from crewai.tools import BaseTool
+from typing import Type
+from pydantic import BaseModel, Field
 
-# Configurar chaves de API
-os.environ["SERPER_API_KEY"] = "Your Key"  # serper.dev API key
-os.environ["OPENAI_API_KEY"] = "Your Key"
+class ToolNameSchema(BaseModel):
+    """Input for ToolName."""
+    parameter: str = Field(description="Parameter description")
 
-# Instanciar ferramentas
-docs_tool = DirectoryReadTool(directory='./blog-posts')
-file_tool = FileReadTool()
-search_tool = SerperDevTool()
-web_rag_tool = WebsiteSearchTool()
+class ToolName(BaseTool):
+    name: str = "tool_name"
+    description: str = "Tool description"
+    args_schema: Type[BaseModel] = ToolNameSchema
 
-# Definir seus agentes
-agent1 = Agent(
-    role='role1',
-    goal='goal1',
-    backstory='backstory1',
-    cache=True,
-    verbose=False,
-    use_system_prompt=True,
-    max_rpm=30,
-    max_iter=5
-)
-agent2 = Agent(
-    role='role2',
-    goal='goal2',
-    backstory='backstory2',
-    cache=True,
-    verbose=False,
-    use_system_prompt=True,
-    max_rpm=30,
-    max_iter=5
-)
-
-# Definir suas tarefas
-task1 = Task(
-    description='description1',
-    agent=agent1,
-    expected_output='expected_output1'
-)
-task2 = Task(
-    description='description2',
-    agent=agent2,
-    expected_output='expected_output2'
-)
-
-# Formar a equipe com um processo genérico
-generic_crew = Crew(
-    agents=[agent1, agent2],
-    tasks=[task1, task2],
-    process=Process.process_type,
-    respect_context_window=True,
-    memory=True,
-    manager_agent=None,
-    planning=True
-)
-
-# Executar a equipe
-result = generic_crew.kickoff()
-
-# Acessar a saída com tipagem segura
-task_output: TaskOutput = result.tasks[0].output
-crew_output: CrewOutput = result.output
+    def _run(self, parameter: str) -> str:
+        # Tool implementation
+        return "result"
 ```
 
-## Requisitos
+#### 6. `crew-browser-tool` - Ferramentas de Navegação Web
 
-- Visual Studio Code 1.95.0 ou superior
-- Extensão Python para VS Code
-- Biblioteca CrewAI instalada (`pip install crewai`)
+```python
+from crewai_tools import (
+    ScrapeWebsiteTool,
+    SeleniumScrapingTool,
+    WebsiteSearchTool
+)
 
-## Instalação
+# Scrape website content
+scrape_tool = ScrapeWebsiteTool()
+
+# Advanced scraping with Selenium
+selenium_tool = SeleniumScrapingTool()
+
+# Search within website
+search_tool = WebsiteSearchTool()
+```
+
+#### 7. `crew-search-tool` - Ferramenta de Busca na Internet
+
+Ferramenta para busca na web usando Serper API.
+
+#### 8. `crew-file-tools` - Ferramentas de Manipulação de Arquivos
+
+Ferramentas para leitura, escrita e manipulação de arquivos.
+
+### 🤖 Configuração de LLM
+
+#### 9. `crew-llm` - Configurar LLM
+
+```python
+from crewai import LLM
+
+# Configure LLM
+llm = LLM(
+    model="gpt-4",
+    temperature=0.7,
+    base_url="",
+    api_key=""
+)
+```
+
+### 📚 Base de Conhecimento
+
+#### 10. `crew-knowledge-text` - Fonte de Conhecimento de Texto
+
+Base de conhecimento a partir de texto simples.
+
+#### 11. `crew-knowledge-pdf` - Fonte de Conhecimento PDF
+
+Base de conhecimento a partir de arquivos PDF.
+
+### 🔄 Funcionalidades Avançadas
+
+#### 12. `crew-pipeline` - Criar Pipeline CrewAI
+
+```python
+from crewai import Pipeline
+
+pipeline = Pipeline(
+    stages=[crews],
+    verbose=True
+)
+
+result = pipeline.kickoff(inputs={})
+```
+
+#### 13. `crew-flow` - Criar Flow CrewAI
+
+```python
+from crewai.flow import Flow, start, listen
+
+class FlowName(Flow):
+    @start()
+    def initial_method(self):
+        """Initial flow method"""
+        return "initial_result"
+
+    @listen(initial_method)
+    def next_method(self, result):
+        """Next flow method"""
+        return "final_result"
+
+# Run the flow
+flow = FlowName()
+result = flow.kickoff()
+```
+
+#### 14. `crew-train` - Treinamento e Teste
+
+Configuração para treinamento e teste de equipes CrewAI.
+
+#### 15. `crew-memory` - Configuração de Memória
+
+Configuração de memória para agentes e equipes.
+
+### 📁 Templates de Projeto
+
+#### 16. `crew-basic-setup` - Setup Básico Completo
+
+Cria um projeto CrewAI completo com agentes, tarefas e execução.
+
+#### 17. `crew-hierarchical` - Processo Hierárquico
+
+Implementa um processo hierárquico com agente gerente e trabalhadores especializados.
+
+## 📦 Instalação
 
 1. Abra o VS Code
-2. Vá para Extensões (Ctrl+Shift+X)
-3. Pesquise por "CrewAI Snippets"
-4. Clique em Instalar
+2. Vá para a aba de Extensions (Ctrl+Shift+X)
+3. Procure por "CrewAI Snippets"
+4. Clique em Install
 
-## Uso
+## 🔧 Como Usar
 
-1. Abra um arquivo Python
-2. Digite um dos prefixos de snippet (por exemplo, `crew-agent`)
-3. Pressione Tab ou Enter para inserir o snippet
-4. Use Tab para navegar pelos placeholders e preencha seus valores
+1. Abra um arquivo Python (`.py`)
+2. Digite o prefixo do snippet (ex: `crew-agent`)
+3. Pressione Tab ou Enter para expandir o snippet
+4. Use Tab para navegar entre os placeholders
+5. Preencha os valores conforme necessário
 
-## Licença
+## 📝 Lista Completa de Snippets
 
-Esta extensão está licenciada sob a Licença MIT.
+| Prefixo               | Descrição                           |
+| --------------------- | ----------------------------------- |
+| `crew-agent`          | Agente CrewAI completo              |
+| `crew-task`           | Tarefa CrewAI completa              |
+| `crew-crew`           | Equipe CrewAI avançada              |
+| `crew-simple-tool`    | Ferramenta simples                  |
+| `crew-custom-tool`    | Ferramenta personalizada com schema |
+| `crew-browser-tool`   | Ferramentas de navegação web        |
+| `crew-search-tool`    | Ferramenta de busca                 |
+| `crew-file-tools`     | Ferramentas de arquivo              |
+| `crew-llm`            | Configuração de LLM                 |
+| `crew-knowledge-text` | Base de conhecimento de texto       |
+| `crew-knowledge-pdf`  | Base de conhecimento PDF            |
+| `crew-pipeline`       | Pipeline CrewAI                     |
+| `crew-flow`           | Flow CrewAI                         |
+| `crew-train`          | Treinamento e teste                 |
+| `crew-memory`         | Configuração de memória             |
+| `crew-basic-setup`    | Setup básico completo               |
+| `crew-hierarchical`   | Processo hierárquico                |
 
-## Contribuição
+## 🔗 Links Úteis
 
-Sinta-se à vontade para contribuir com esta extensão no [GitHub](https://github.com/yourusername/crewai-snippets).
+- [Documentação Oficial CrewAI](https://docs.crewai.com/)
+- [GitHub CrewAI](https://github.com/crewAIInc/crewAI)
+- [Exemplos CrewAI](https://github.com/crewAIInc/crewAI-examples)
 
-## Notas de Lançamento
+## 🤝 Contribuindo
 
-### 0.0.1
+Se você quiser contribuir com novos snippets ou melhorias:
 
-Lançamento inicial dos Snippets CrewAI:
-- Adicionados snippets básicos para Agentes, Tarefas, Equipes e Ferramentas
-- Adicionado template de processo completo
+1. Fork este repositório
+2. Crie uma branch para sua feature
+3. Adicione seus snippets no arquivo `snippets/snippets.code-snippets`
+4. Atualize o README se necessário
+5. Abra um Pull Request
+
+## 📄 Licença
+
+MIT License - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+## 🐛 Bugs e Sugestões
+
+Se encontrar bugs ou tiver sugestões, por favor abra uma [issue](https://github.com/yourusername/crewai-snippets/issues).
+
+---
+
+### Comunidade CrewAI
+
+Feito com ❤️ para a comunidade CrewAI

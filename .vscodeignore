@@ -2,3 +2,16 @@
 .vscode-test/**
 .gitignore
 vsc-extension-quickstart.md
+src/**
+**/jsconfig.json
+**/*.map
+.nyc_output
+**/.eslintrc.json
+test-project/**
+**/__pycache__/**
+**/node_modules/**
+**/.DS_Store
+**/*.vsix
+**/.git/**
+**/test_venv/**
+.markdownlint.json
